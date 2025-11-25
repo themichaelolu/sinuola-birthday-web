@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -13,6 +15,78 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* --- Animations & Motion Utilities --- */
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes fade-in-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Tailwind-like utility classes for semantic animation names used in JSX */
+.animate-float {
+  animation: float 3.5s ease-in-out infinite;
+}
+.animate-fade-in-down {
+  animation: fade-in-down 700ms ease both;
+}
+.animate-fade-up {
+  animation: fade-up 900ms cubic-bezier(.2,.9,.2,1) both;
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-fade-in-down,
+  .animate-fade-up,
+  .transition-opacity,
+  .transition-transform,
+  .transition {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* --- Responsive & Mobile friendly helpers --- */
+/* Use a slightly smaller base font on small phones, larger on wider screens */
+html { font-size: 16px; }
+@media (max-width: 380px) {
+  html { font-size: 15px; }
+}
+@media (min-width: 1024px) {
+  html { font-size: 18px; }
+}
+
+/* Ensure the hero section looks crisp on small screens and is touch-friendly */
+#hero {
+  padding-top: 3.25rem; /* 52px */
+  padding-bottom: 3.25rem;
+}
+@media (min-width: 640px) {
+  #hero { padding-top: 5rem; padding-bottom: 10rem; }
+}
+
+/* Make grid tiles and images scale down on smaller screens */
+.moment-tile-placeholder { height: 9rem; } /* default shorter mobile tile */
+@media (min-width: 768px) { .moment-tile-placeholder { height: 12rem; } }
+
+/* Slight improvement to the large container so it breathes on small screens */
+.max-w-5xl { padding-left: 1rem; padding-right: 1rem; }
+@media (min-width: 640px) { .max-w-5xl { padding-left: 1.5rem; padding-right: 1.5rem; } }
+
+/* Buttons should be large enough for touch targets */
+.touch-button { padding: 0.7rem 1.1rem; min-height: 44px; }
+
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -22,12 +96,18 @@ a:hover {
   color: #535bf2;
 }
 
+/* make the page and #root span the full viewport so children can use 100vh reliably
+   and avoid centering the entire app which prevents content from filling the screen */
+html, body, #root {
+  height: 100%;
+  min-height: 100%;
+}
+
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  display: block; /* avoid globally centering the whole app so sections can be full-height */
 }
 
 h1 {
