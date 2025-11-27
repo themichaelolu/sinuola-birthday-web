@@ -86,6 +86,98 @@ html { font-size: 16px; }
 /* Buttons should be large enough for touch targets */
 .touch-button { padding: 0.7rem 1.1rem; min-height: 44px; }
 
+/* Decorative emojis & confetti */
+.decorative-emoji {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform, opacity;
+}
+
+/* Heart / rose drift animation */
+@keyframes float-away {
+  0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-140px) scale(0.95) rotate(20deg); opacity: 0; }
+}
+
+.emoji-heart {
+  animation: float-away 6s linear infinite;
+  font-size: 20px;
+  transform-origin: center;
+}
+.emoji-rose {
+  animation: float-away 7s cubic-bezier(.2,.9,.2,1) infinite;
+  font-size: 18px;
+}
+
+/* Confetti pieces — several colors and different durations/delays for a scattered effect */
+.confetti-wrap { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
+.confetti {
+  position: absolute;
+  width: 8px;
+  height: 12px;
+  opacity: 0.95;
+  transform-origin: center;
+  animation-name: confetti-fall, confetti-rotate;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* size variations so we can scatter small/medium/large confetti pieces */
+.confetti--sm { width: 5px; height: 7px; }
+.confetti--md { width: 8px; height: 12px; }
+.confetti--lg { width: 10px; height: 14px; }
+
+/* Add subtle X-axis movement variety (wider sway) */
+@keyframes confetti-fall-wind {
+  0% { transform: translateY(-10vh) translateX(0); opacity: 1; }
+  50% { transform: translateY(40vh) translateX(60px); }
+  100% { transform: translateY(110vh) translateX(-40px); opacity: 0.9; }
+}
+
+/* Use both fall and wind variants for more movement variety */
+.confetti.wind { animation-name: confetti-fall-wind, confetti-rotate; }
+
+@keyframes confetti-fall {
+  0% { transform: translateY(-10vh) translateX(0); opacity: 1; }
+  100% { transform: translateY(110vh) translateX(40px); opacity: 0.9; }
+}
+
+@keyframes confetti-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Colors for confetti */
+.confetti--pink { background: linear-gradient(90deg, #ffd5e5, #ff9bbd); }
+.confetti--rose { background: linear-gradient(90deg, #f9c2d7, #e7789d); }
+.confetti--yellow { background: linear-gradient(90deg, #fff1b8, #ffd36f); }
+.confetti--mint { background: linear-gradient(90deg, #d9fff2, #9fead6); }
+.confetti--lavender { background: linear-gradient(90deg, #e9ddff, #d8b8ff); }
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .emoji-heart, .emoji-rose, .confetti { animation: none !important; }
+}
+
+/* Mobile: keep animations subtle or off to save CPU and avoid clutter */
+@media (max-width: 420px) {
+  .confetti-wrap { display: none; }
+  .decorative-emoji { display: none; }
+}
+
+/* Section-level confetti/emoji containers: positioned relative to their section and limited in scope */
+.section-confetti { position: absolute; inset: 0; pointer-events: none; overflow: visible; z-index: 5; }
+.section-confetti .confetti { width: 6px; height: 8px; opacity: 0.95; }
+.section-emoji { position: absolute; pointer-events: none; z-index: 6; }
+.section-emoji.emoji-sm { font-size: 16px; }
+.section-emoji.emoji-md { font-size: 20px; }
+
+/* reduce visual noise for long content sections on mobile */
+@media (max-width: 820px) {
+  .section-confetti { opacity: 0.9; }
+}
+
 
 a {
   font-weight: 500;
